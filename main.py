@@ -32,7 +32,7 @@ template = env.get_template('wine.html')
 yers_old = get_years(years)
 rendered_page = template.render(
     years_old=yers_old,
-    wines=categories
+    categories=categories
 )
 
 with open('index.html', 'w', encoding="utf8") as file:
