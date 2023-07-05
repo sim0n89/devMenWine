@@ -1,3 +1,4 @@
+import collections
 from collections import defaultdict
 import json
 from http.server import HTTPServer, SimpleHTTPRequestHandler
@@ -15,26 +16,11 @@ def get_years(eyars_old):
         return f'{eyars_old} лет'
 
 
-def check_wine(wine):
-    new_wine = {}
-    for key in wine:
-        if not pandas.isna(wine[key]):
-            new_wine[key] = wine[key]
-        else:
-            new_wine[key] = ''
-    return new_wine
-
-
-excel_data = pandas.read_excel('wine2.xlsx')
+excel_data = pandas.read_excel('wine3.xlsx', na_filter=False)
 wines = excel_data.to_dict(orient='records')
 categories = defaultdict(list)
 for wine in wines:
-    new_wine = check_wine(wine)
-    if wine['Категория'] in categories:
-        categories[wine['Категория']].append(new_wine)
-    else:
-        categories[wine['Категория']] = []
-        categories[wine['Категория']].append(new_wine)
+    categories[wine['Категория']].append(wine)
 
 pprint.pprint(categories)
 env = Environment(
@@ -47,7 +33,7 @@ template = env.get_template('wine.html')
 yers_old = get_years(years)
 rendered_page = template.render(
     years_old=yers_old,
-    wines=wines
+    wines=categories
 )
 
 with open('index.html', 'w', encoding="utf8") as file:
