@@ -1,9 +1,12 @@
+import os
 from collections import defaultdict
 from http.server import HTTPServer, SimpleHTTPRequestHandler
 import datetime
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 import pandas
-import pprint
+import argparse
+from os.path import join, dirname
+from dotenv import load_dotenv
 
 
 def get_years(eyars_old):
@@ -16,13 +19,25 @@ def get_years(eyars_old):
 
 
 def main():
-    excel_data = pandas.read_excel('wine3.xlsx', na_filter=False)
+    dotenv_path = join(dirname(__file__), '.env')
+    load_dotenv(dotenv_path)
+
+    parser = argparse.ArgumentParser(
+        description='Введите файл для загрузки товаров'
+    )
+    parser.add_argument('-f', '--file', help='Ваш файл', default="wine3.xlsx")
+    args = parser.parse_args()
+
+    try:
+        file = os.environ["FILE"]
+    except KeyError:
+        file = args.file
+
+    excel_data = pandas.read_excel(file, na_filter=False)
     wines = excel_data.to_dict(orient='records')
     categories = defaultdict(list)
     for wine in wines:
         categories[wine['Категория']].append(wine)
-
-    pprint.pprint(categories)
     env = Environment(
         loader=FileSystemLoader('.'),
         autoescape=select_autoescape(['html', 'xml'])
