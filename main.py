@@ -42,12 +42,11 @@ def main():
         loader=FileSystemLoader('.'),
         autoescape=select_autoescape(['html', 'xml'])
     )
-    delta = (datetime.datetime.now() - datetime.datetime(year=1920, month=1, day=1))
-    years = delta.days // 365
+    years = (datetime.datetime.now() - datetime.datetime(year=1920, month=1, day=1)) // 365
     template = env.get_template('wine.html')
-    yers_old = get_years(years)
+    years_old = get_years(years)
     rendered_page = template.render(
-        years_old=yers_old,
+        years_old=years_old,
         categories=categories
     )
 
