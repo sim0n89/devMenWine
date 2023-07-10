@@ -43,12 +43,11 @@ def main():
         loader=FileSystemLoader('.'),
         autoescape=select_autoescape(['html', 'xml'])
     )
-    years = date.today().year - 1920
-    print(years)
+
     template = env.get_template('wine.html')
-    years_old = get_years(years)
+    years_old_text = get_years(date.today().year - 1920)
     rendered_page = template.render(
-        years_old=years_old,
+        years_old=years_old_text,
         categories=categories
     )
 
