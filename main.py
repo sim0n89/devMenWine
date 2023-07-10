@@ -2,7 +2,7 @@ import os
 import pprint
 from collections import defaultdict
 from http.server import HTTPServer, SimpleHTTPRequestHandler
-import datetime
+from datetime import date
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 import pandas
 import argparse
@@ -43,7 +43,8 @@ def main():
         loader=FileSystemLoader('.'),
         autoescape=select_autoescape(['html', 'xml'])
     )
-    years = (datetime.datetime.now() - datetime.datetime(year=1920, month=1, day=1)).days // 365
+    years = date.today().year - 1920
+    print(years)
     template = env.get_template('wine.html')
     years_old = get_years(years)
     rendered_page = template.render(
