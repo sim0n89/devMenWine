@@ -26,7 +26,7 @@ def main():
     parser = argparse.ArgumentParser(
         description='Введите файл для загрузки товаров'
     )
-    parser.add_argument('-f', '--file', help='Ваш файл', default="wine3.xlsx")
+    parser.add_argument('-f', '--file', help='Ваш файл', default="wine.xlsx")
     args = parser.parse_args()
 
     try:
