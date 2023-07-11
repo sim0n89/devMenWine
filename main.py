@@ -45,9 +45,9 @@ def main():
     )
 
     template = env.get_template('wine.html')
-    years_old_text = get_years(date.today().year - 1920)
+    age = get_years(date.today().year - 1920)
     rendered_page = template.render(
-        years_old=years_old_text,
+        age=age,
         categories=categories
     )
 
